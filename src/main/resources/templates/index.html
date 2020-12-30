@@ -1,18 +1,22 @@
-<!DOCTYPE HTML>
-<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Spring Boot Thymeleaf + Spring Security</title>
+    <meta charset="UTF-8">
+    <title>Hua.gr</title>
+    <div th:replace="fragments/header :: header"></div>
 </head>
 <body>
+<br>
 <div layout:fragment="content" class="container">
 
     <div class="jumbotron">
         <h1>Front Page</h1>
         <p>This is a temporary example to make sure everything works</p>
         <p>
-            <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">Some button</a>
+            <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">Some Button &raquo;</a>
         </p>
     </div>
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
