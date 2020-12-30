@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,13 +23,23 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery(
-                        "select username,password, enabled from user where username=?")
-                .authoritiesByUsernameQuery(
-                        "select username, authority from authorities where username=?");
+        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery("select username,password, enabled from user where username=?")
+                .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
+    }
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception
+    {
+        http
+                .authorizeRequests() // authorize
+                //.antMatchers("/hello").hasRole("ADMIN")
+                .anyRequest().authenticated() // all requests are authenticated
+                .and()
+                .formLogin().permitAll() //allow "/login"
+                .defaultSuccessUrl("/", true) // set default page for success login
+                .and()
+                .logout().permitAll(); // allow "logout"
     }
 
     @Bean
