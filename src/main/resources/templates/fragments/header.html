@@ -1,4 +1,5 @@
-<header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+<header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <script src="webjars/jquery/1.9.1/jquery.min.js"></script>
     <link rel = "stylesheet"
           type = "text/css"
           href = "bootstrap.min.css" />
@@ -16,24 +17,11 @@
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" href="/add-user">Add User</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
+                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN, SECRETARY')">
+                    <a class="nav-link" href="/get-info">Get Doctorate Points</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
