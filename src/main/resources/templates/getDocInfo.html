@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:margin-right="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Hua.gr</title>
@@ -14,7 +13,7 @@
         <form class="form-horizontal" align="center" th:action="@{/submitSearch}" method="post" style="max-width:350px;margin: 0 auto;">
             <div class="form-group">
                 <select class="custom-select" id="typeSelect" name="type">
-                    <option selected="">Choose type of info to search for.</option>
+                    <option value="0" selected="">Choose type of info to search for.</option>
                     <option value="1">Total points</option>
                     <option value="2">Teaching points</option>
                     <option value="3">Surveillance Points</option>
@@ -27,6 +26,7 @@
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" role="button" value="Search" id="submitSearch" disabled="true">
             </div>
+            <!--/*@thymesVar id="success" type="java"*/-->
             <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
         </form>
         <script>

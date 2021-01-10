@@ -18,7 +18,6 @@ public class Secretary
 
     public String getDocPoints(String docid) throws SQLException
     {
-        System.out.println("111");
         //TODO: Validate if ID exists in database
 
         String getQueryStatement = "select sum(SurveilancePoints + CorrectionPoints + TeachingPoints) as 'Total' from PhD_Candidate	where ID="
