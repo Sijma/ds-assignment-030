@@ -26,7 +26,7 @@ public class MySQL
             // connect to a DBMS.
             // Using the DriverManager, we can have many connections to different DBMS
             db_con_obj = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/ds-assignment?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                    "jdbc:mysql://localhost:3306/ds-assignment?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
                     "root", "1234");
             if (db_con_obj != null) {
                 System.out.println("Connection Successful!");
