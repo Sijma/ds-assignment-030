@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Service
-public class UsersService
+public class DataServices
 {
     @Autowired
     private UsersRepository repo;
