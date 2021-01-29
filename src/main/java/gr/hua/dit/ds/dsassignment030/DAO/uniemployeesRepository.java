@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface uniemployees extends JpaRepository<uniEployees, String> {
+public interface uniemployeesRepository extends JpaRepository<uniEployees, String> {
     @Query("SELECT p FROM uniEployees p WHERE CONCAT(p.personellID,' ',p.username, ' ', p.password, ' ',p.authority) LIKE %?1%")
     public List<uniEployees> search(String keyword);
 }

@@ -18,13 +18,13 @@ public class UsersService
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private final String[] roles = new String[]{"ROLE_ADMIN","ROLE_SECRETARY","ROLE_USER"};
+    private final String[] roles = new String[]{"ROLE_CANDIDATE", "ROLE_ADMIN", "ROLE_SECRETARY", "ROLE_PROF", "ROLE_ASSEMBLY"};
 
     public void register(User user)
     {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAuthority(roles[Integer.parseInt(user.getAuthority()) - 1]);
-        repo.save(user);
+         repo.save(user);
     }
 
     public boolean checkIfUserExist(String username) {
