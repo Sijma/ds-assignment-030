@@ -1,7 +1,7 @@
 package gr.hua.dit.ds.dsassignment030.controllers;
 
 import gr.hua.dit.ds.dsassignment030.Entities.User;
-import gr.hua.dit.ds.dsassignment030.Services.UsersService;
+import gr.hua.dit.ds.dsassignment030.Services.DataServices;
 import gr.hua.dit.ds.dsassignment030.Users.Secretary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 @Controller
 public class MainPageController {
     @Autowired
-    private UsersService service;
+    private DataServices service;
 
     @GetMapping("/")
     public String showIndex()
