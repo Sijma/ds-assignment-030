@@ -15,7 +15,7 @@ public class phdCandidate {
 
     @Id
     @Column(name = "ID", nullable = false)
-    private int id;
+    private int candidateid;
     @Column(name = "personellID", nullable = false)
     private int personellID;
     @Column(name = "User_name", nullable = false)
@@ -41,12 +41,12 @@ public class phdCandidate {
     @Column(name = "targetTeachingPoints" )
     private float ttp ;
 
-    public int getId() {
-        return id;
+    public int getCandidateid() {
+        return candidateid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCandidateid(int candidateid) {
+        this.candidateid = candidateid;
     }
 
     public int getPersonellID() {
@@ -71,6 +71,14 @@ public class phdCandidate {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 
     public String getFname() {

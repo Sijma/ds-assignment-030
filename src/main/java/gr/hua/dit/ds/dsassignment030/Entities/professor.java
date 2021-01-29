@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
 @Table(name = "Supervising_proffesor")
-public class professor extends uniEployees{
+public class professor {
     @Id
 
     @Column(name = "personellID", nullable = false)
@@ -16,7 +16,10 @@ public class professor extends uniEployees{
     private String password;
     @Column(name = "authority", nullable = false)
     private String authority;
-
+    @Column(name = "First_name", nullable = false)
+    private String fname;
+    @Column(name = "Last_name", nullable = false)
+    private String lname;
 
     public int getPersonellID() {
         return personellID;
@@ -50,5 +53,19 @@ public class professor extends uniEployees{
         this.authority = authority;
     }
 
+    public String getFname() {
+        return fname;
+    }
 
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
 }
