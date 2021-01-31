@@ -1,6 +1,7 @@
-package gr.hua.dit.ds.dsassignment030.Entities;
+package gr.hua.dit.ds.assignment030.Entities;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class Users
+{
 
     @Id
     @Column(name = "username", nullable = false)

@@ -25,7 +25,8 @@
                     <option value="0" selected="">Choose Role:</option>
                     <option value="1">Admin</option>
                     <option value="2">Secretary</option>
-                    <option value="3">User</option>
+                    <option value="3">Candidate</option>
+                    <option value="4">Professor</option>
                 </select>
             </div>
             <br>
@@ -36,7 +37,10 @@
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        <br>
+        <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}" style="max-width:400px;margin: 0 auto;"></div>
     </div>
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

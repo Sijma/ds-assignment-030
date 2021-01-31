@@ -1,4 +1,4 @@
-package gr.hua.dit.ds.dsassignment030.config;
+package gr.hua.dit.ds.assignment030.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hua.gr</title>
+    <div th:replace="fragments/header :: header"></div>
+</head>
+<body>
+<table class="table table-hover">
+    <thead>
+    <tr class="table-info">
+        <td>Username</td>
+        <td>Password (Encoded)</td>
+        <td>Enabled</td>
+        <td>Role</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="Users : ${listUsers}">
+        <td th:text="${Users.username}">Username</td>
+        <td th:text="${Users.password}">Password</td>
+        <td th:text="${Users.enabled}">Enabled</td>
+        <td th:text="${Users.authority}">Role</td>
+        <td>
+            <a th:href="@{'/editUser/' + ${Users.username}}">Edit</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a th:href="@{'/deleteUser/' + ${Users.username}}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

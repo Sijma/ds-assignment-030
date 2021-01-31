@@ -23,6 +23,12 @@
                 <li class="nav-item" sec:authorize="hasAnyRole('ADMIN, SECRETARY')">
                     <a class="nav-link" href="/get-info">Get Doctorate Points</a>
                 </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" href="/list-users">All Users</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN, SECRETARY')">
+                    <a class="nav-link" href="/list-candidates">All Candidates</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/logout" class="btn btn-danger">Log out</a></li>
