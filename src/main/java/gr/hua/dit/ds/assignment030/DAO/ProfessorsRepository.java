@@ -1,0 +1,14 @@
+package gr.hua.dit.ds.assignment030.DAO;
+
+import gr.hua.dit.ds.assignment030.Entities.Users;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface ProfessorsRepository extends JpaRepository<Users, String>
+{
+    @Query("SELECT p FROM Users p WHERE CONCAT(p.username, ' ', p.password, ' ', p.enabled, ' ',p.authority) LIKE %?1%")
+    public List<Users> search(String keyword);
+}
+
