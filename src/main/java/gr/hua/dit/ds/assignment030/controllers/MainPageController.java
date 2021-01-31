@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -50,12 +51,34 @@ public class MainPageController {
         return "newUserForm";
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping("/submit-user")
     public String saveUser(@ModelAttribute("user") Users users, RedirectAttributes redirAttrs)
     {
         service.register(users);
         redirAttrs.addFlashAttribute("success","Users "+ users.getUsername()+" Added Successfully.");
-        return "redirect:/add-user";
+        if (!(users.getAuthority().equals("ROLE_ADMIN")))
+        {
+            showAssignUserForm(users);
+        }
+        redirAttrs.addFlashAttribute("success", users.getUsername());
+        return "redirect:/submit-user";
+    }
+
+    public ModelAndView showAssignUserForm(Users user)
+    {
+        ModelAndView mav = new ModelAndView("assignUser");
+        mav.addObject("user", user);
+
+        return mav;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/assignUser/{username}")
+    public String assignUser(@PathVariable(name = "username") String username)
+    {
+        service.assignUser(username);
+        return "redirect:/list-users";
     }
 
     @Secured("ROLE_ADMIN")
@@ -78,20 +101,22 @@ public class MainPageController {
         return "listAllUsers";
     }
 
+    @RequestMapping("/edit/{username}")
+    public ModelAndView showEditProductForm(@PathVariable(name = "username") String username)
+    {
+        ModelAndView mav = new ModelAndView("edit-user");
+
+        Users user = service.getUser(username);
+        mav.addObject("user", user);
+
+        return mav;
+    }
 
     @Secured("ROLE_ADMIN")
     @RequestMapping("/deleteUser/{username}")
     public String deleteUser(@PathVariable(name = "username") String username)
     {
         service.deleteUser(username);
-        return "redirect:/list-users";
-    }
-
-    @Secured("ROLE_ADMIN")
-    @RequestMapping("/assignUser/{username}")
-    public String assignUser(@PathVariable(name = "username") String username)
-    {
-        service.assignUser(username);
         return "redirect:/list-users";
     }
 }

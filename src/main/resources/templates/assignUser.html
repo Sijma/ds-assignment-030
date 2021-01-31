@@ -9,25 +9,16 @@
 <br>
 <div class="container">
     <div class="jumbotron">
-        <form class="form-horizontal" th:object="${user}" th:action="@{/submit-user}" method="post" style="max-width:400px;margin: 0 auto;">
+        <form class="form-horizontal" th:object="${user}" th:action="@{/assign-user}" method="post" style="max-width:400px;margin: 0 auto;">
             <div class="form-group">
-                <label for="usernameInput">Username</label>
-                <input type="text" class="form-control" th:field="*{username}" id="usernameInput" aria-describedby="Help" placeholder="Enter Username">
+                <label for="ID">ID</label>
+                <input type="text" class="form-control" th:field="*{ID}" id="ID" aria-describedby="Help" placeholder="Enter Username">
             </div>
             <div class="form-group">
                 <label for="passwordInput">Password</label>
                 <input type="password" class="form-control" th:field="*{password}" id="passwordInput" placeholder="Enter Password">
             </div>
             <br>
-            <label>Roles: </label>
-            <div class="form-group">
-                <select class="custom-select" th:field="*{authority}">
-                    <option value="0" selected="">Choose Role:</option>
-                    <option value="1">Admin</option>
-                    <option value="3">Candidate</option>
-                    <option value="4">Professor</option>
-                </select>
-            </div>
             <br>
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" th:field="*{enabled}" id="enabledSwitch" checked="">

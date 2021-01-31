@@ -22,7 +22,7 @@ public class DataServices
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private final String[] roles = new String[]{"ROLE_ADMIN", "ROLE_SECRETARY", "ROLE_CANDIDATE", "ROLE_PROF"};
+    private final String[] roles = new String[]{"ROLE_ADMIN", "ROLE_CANDIDATE", "ROLE_PROF"};
 
     public void register(Users users)
     {
