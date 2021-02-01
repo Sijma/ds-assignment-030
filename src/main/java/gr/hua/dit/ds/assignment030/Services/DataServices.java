@@ -1,8 +1,10 @@
 package gr.hua.dit.ds.assignment030.Services;
 
 import gr.hua.dit.ds.assignment030.DAO.PhdsRepository;
+import gr.hua.dit.ds.assignment030.DAO.ProfessorsRepository;
 import gr.hua.dit.ds.assignment030.DAO.UsersRepository;
 import gr.hua.dit.ds.assignment030.Entities.Candidates;
+import gr.hua.dit.ds.assignment030.Entities.Professors;
 import gr.hua.dit.ds.assignment030.Entities.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,18 +19,31 @@ public class DataServices
     private PhdsRepository phdRepo;
 
     @Autowired
+    private ProfessorsRepository proRepo;
+
+    @Autowired
     private UsersRepository userRepo;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private final String[] roles = new String[]{"ROLE_ADMIN", "ROLE_SECRETARY", "ROLE_CANDIDATE", "ROLE_PROF"};
+    private final String[] roles = new String[]{"ROLE_ADMIN", "ROLE_CANDIDATE", "ROLE_PROF"};
 
-    public void register(Users users)
+    public void registerUser(Users users)
     {
         users.setPassword(passwordEncoder.encode(users.getPassword()));
         users.setAuthority(roles[Integer.parseInt(users.getAuthority()) - 1]);
         userRepo.save(users);
+    }
+
+    public void registerProf(Professors professor)
+    {
+        proRepo.save(professor);
+    }
+
+    public void registerCan(Candidates candidate)
+    {
+        phdRepo.save(candidate);
     }
 
     public boolean checkIfUserExist(String username) {
@@ -39,14 +54,14 @@ public class DataServices
         if (keyword != null) {
             return userRepo.search(keyword);
         }
-        return userRepo.findAll();
+        return (List<Users>) userRepo.findAll();
     }
 
     public List<Candidates> listAllCandidates(String keyword) {
         if (keyword != null) {
             return phdRepo.search(keyword);
         }
-        return phdRepo.findAll();
+        return (List<Candidates>) phdRepo.findAll();
     }
 
     public void assignUser(String username)

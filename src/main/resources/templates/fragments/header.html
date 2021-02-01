@@ -20,8 +20,11 @@
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link" href="/add-user">Add User</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAnyRole('ADMIN, SECRETARY')">
-                    <a class="nav-link" href="/get-info">Get Doctorate Points</a>
+                <li class="nav-item" sec:authorize="hasRole('CANDIDATE')">
+                    <a class="nav-link" href="/view-progress">View Progress</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('PROF')">
+                    <a class="nav-link" href="/view-super-candidates">View Supervising Candidates</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                     <a class="nav-link" href="/list-users">All Users</a>

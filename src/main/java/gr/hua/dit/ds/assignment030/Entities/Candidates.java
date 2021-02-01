@@ -1,9 +1,6 @@
 package gr.hua.dit.ds.assignment030.Entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "phd_candidate")
@@ -13,34 +10,37 @@ public class Candidates {
     @Column(name = "ID", nullable = false)
     private int candidateId;
 
-    @Column(name = "personellID", nullable = false)
-    private String supervisorId;
 
-    @Column(name = "User_name", nullable = false)
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "personellID")
+    private Professors professor;
+
+    @OneToOne
+    @JoinColumn(name = "User_name", referencedColumnName = "username")
+    private Users user;
 
     @Column(name = "First_name", nullable = false)
     private String fname;
 
-    @Column(name = "Last_name")
+    @Column(name = "Last_name", nullable = false)
     private String lname;
 
-    @Column(name = "SurveilancePoints", columnDefinition = "float default 0")
+    @Column(name = "surveilance_points", columnDefinition = "float default 0")
     private float sp;
 
-    @Column(name = "targetSurveilancePoints", columnDefinition = "float default 0")
+    @Column(name = "target_surveilance_points", columnDefinition = "float default 0")
     private float tsp;
 
-    @Column(name = "CorrectionPoints", columnDefinition = "float default 0")
+    @Column(name = "correction_Points", columnDefinition = "float default 0")
     private float cp;
 
-    @Column(name = "targetCorrectionPoints", columnDefinition = "float default 0")
+    @Column(name = "target_correction_points", columnDefinition = "float default 0")
     private float tcp;
 
-    @Column(name = "TeachingPoints", columnDefinition = "float default 0")
+    @Column(name = "Teaching_Points", columnDefinition = "float default 0")
     private float tp;
 
-    @Column(name = "targetTeachingPoints", columnDefinition = "float default 0")
+    @Column(name = "target_teaching_points", columnDefinition = "float default 0")
     private float ttp ;
 
     public int getCandidateId() {
@@ -51,20 +51,24 @@ public class Candidates {
         this.candidateId = candidateid;
     }
 
-    public String getSupervisorId() {
-        return supervisorId;
+    public Professors getProfessor()
+    {
+        return professor;
     }
 
-    public void setSupervisorId(String personellID) {
-        this.supervisorId = personellID;
+    public void setProfessor(Professors professor)
+    {
+        this.professor = professor;
     }
 
-    public String getUsername() {
-        return username;
+    public Users getUser()
+    {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(Users user)
+    {
+        this.user = user;
     }
 
     public String getFname() {

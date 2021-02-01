@@ -3,10 +3,9 @@ package gr.hua.dit.ds.assignment030.Entities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -26,6 +25,9 @@ public class Users
     @Column(name = "authority", nullable = false)
     private String authority;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private Professors professor;
+
     public String getUsername() {
         return username;
     }
@@ -40,6 +42,16 @@ public class Users
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Professors getProfessor()
+    {
+        return professor;
+    }
+
+    public void setProfessor(Professors professor)
+    {
+        this.professor = professor;
     }
 
     public boolean isEnabled() {
