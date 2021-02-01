@@ -1,15 +1,19 @@
 package gr.hua.dit.ds.assignment030.Entities;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "phd_candidate")
+@DynamicInsert
+@DynamicUpdate
 public class Candidates {
 
     @Id
     @Column(name = "ID", nullable = false)
-    private int candidateId;
-
+    private String candidateId;
 
     @ManyToOne
     @JoinColumn(name = "personellID")
@@ -19,10 +23,10 @@ public class Candidates {
     @JoinColumn(name = "User_name", referencedColumnName = "username")
     private Users user;
 
-    @Column(name = "First_name", nullable = false)
+    @Column(name = "First_name")
     private String fname;
 
-    @Column(name = "Last_name", nullable = false)
+    @Column(name = "Last_name")
     private String lname;
 
     @Column(name = "surveilance_points", columnDefinition = "float default 0")
@@ -43,12 +47,14 @@ public class Candidates {
     @Column(name = "target_teaching_points", columnDefinition = "float default 0")
     private float ttp ;
 
-    public int getCandidateId() {
+    public String getCandidateId()
+    {
         return candidateId;
     }
 
-    public void setCandidateId(int candidateid) {
-        this.candidateId = candidateid;
+    public void setCandidateId(String candidateId)
+    {
+        this.candidateId = candidateId;
     }
 
     public Professors getProfessor()

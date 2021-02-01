@@ -27,23 +27,38 @@ public class DataServices
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private final String[] roles = new String[]{"ROLE_ADMIN", "ROLE_CANDIDATE", "ROLE_PROF"};
-
     public void registerUser(Users users)
     {
         users.setPassword(passwordEncoder.encode(users.getPassword()));
-        users.setAuthority(roles[Integer.parseInt(users.getAuthority()) - 1]);
         userRepo.save(users);
     }
 
-    public void registerProf(Professors professor)
+    public void updateUser(Users user, String username)
     {
-        proRepo.save(professor);
+        user.setUsername(username);
+        userRepo.save(user);
     }
 
-    public void registerCan(Candidates candidate)
+    public void registerProf(Professors prof)
     {
-        phdRepo.save(candidate);
+        proRepo.save(prof);
+    }
+
+    public void updateProf(Professors prof, String id)
+    {
+        prof.setPersonellID(id);
+        proRepo.save(prof);
+    }
+
+    public void registerCan(Candidates can)
+    {
+        phdRepo.save(can);
+    }
+
+    public void updateCan(Candidates can, String id)
+    {
+        can.setCandidateId(id);
+        phdRepo.save(can);
     }
 
     public boolean checkIfUserExist(String username) {
@@ -67,22 +82,28 @@ public class DataServices
     public void assignUser(String username)
     {
         String authority = getUser(username).getAuthority();
-
     }
 
     public Users getUser(String username) {
         return userRepo.findById(username).get();
     }
 
-    public Candidates getCandidate(int id) {
-        return phdRepo.findById(id).get();
-    }
-
     public void deleteUser(String username) {
         userRepo.deleteById(username);
     }
 
-    public void deleteCandidate(int id) {
+    public Candidates getCandidate(String id) {
+        return phdRepo.findById(id).get();
+    }
+
+    public void deleteCandidate(String id) {
         phdRepo.deleteById(id);
     }
+
+    public Professors getProfessor(String id) { return proRepo.findById(id).get(); }
+
+    public void deleteProfessor(String id) {
+        proRepo.deleteById(id);
+    }
+
 }

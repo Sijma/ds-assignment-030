@@ -1,5 +1,7 @@
 package gr.hua.dit.ds.assignment030.Entities;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -9,6 +11,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
+@DynamicInsert
+@DynamicUpdate
 public class Users
 {
 
@@ -27,6 +31,9 @@ public class Users
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Professors professor;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private Candidates candidate;
 
     public String getUsername() {
         return username;
@@ -65,4 +72,14 @@ public class Users
     public String getAuthority() { return authority; }
 
     public void setAuthority(String authority) { this.authority = authority; }
+
+    public Candidates getCandidate()
+    {
+        return candidate;
+    }
+
+    public void setCandidate(Candidates candidate)
+    {
+        this.candidate = candidate;
+    }
 }

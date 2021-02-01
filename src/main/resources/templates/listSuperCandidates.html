@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Hua.gr</title>
@@ -25,7 +25,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="Candidate : ${listCandidates}">
+    <tr th:each="Candidate : ${listCans}">
         <td th:text="${Candidate.candidateId}">canid</td>
         <td th:text="${Candidate.professor.personellID}">supid</td>
         <td th:text="${Candidate.fname}">fname</td>
@@ -39,15 +39,14 @@
         <td th:text="${Candidate.ttp}">ttp</td>
 
         <td>
-            <a th:href="@{'/editCan-' + ${Candidate.candidateId}}">Edit</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a sec:authorize="hasRole('SECRETARY')" th:href="@{'/add-points-' + ${Candidate.candidateId}}">Add Points</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <a th:href="@{'/delete-' + ${Candidate.candidateId}}">Delete</a>
+            <a th:href="@{'/set-targets-' + ${Candidate.user.username}}">Set Targets</a>
         </td>
     </tr>
     </tbody>
 </table>
+<br>
+<div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}" style="max-width:400px;margin: 0 auto;"></div>
+<br>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

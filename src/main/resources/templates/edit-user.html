@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Edit Product</title>
+    <meta charset="UTF-8">
+    <title>Hua.gr</title>
+    <div th:replace="fragments/header :: header"></div>
 </head>
 <body>
-<div align="center">
-    <h1>Edit Product</h1>
+<div class="container" align="center">
+    <div class="jumbotron">
     <br/>
-    <form action="#" th:action="@{/save}" th:object="${user}" method="post">
-        <table border="0" cellpadding="10">
-            <tr>
-                <td>Username:</td>
-                <td><input type="text" th:field="*{username}" readonly="readonly" /></td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td><input type="text" th:field="*{password}" readonly="readonly"/></td>
-            </tr>
-            <tr>
-                <td>Role:</td>
-                <td><input type="text" th:field="*{authority}" /></td>
-            </tr>
-            <tr>
-                <td>Enabled:</td>
-                <td><input type="text" th:field="*{enabled}" /></td>
-            </tr>
-            <tr>
-                <td colspan="2"><button type="submit">Save</button></td>
-            </tr>
-        </table>
+    <form class="form-horizontal" th:object="${user}" th:action="@{/update-user}" method="post" style="max-width:400px;margin: 0 auto;">
+        <div class="form-group">
+            <label for="usernameInput">Username</label>
+            <input type="text" class="form-control" th:field="*{username}" id="usernameInput" >
+        </div>
+        <div class="custom-control custom-switch">
+            <label class="custom-control-label" for="enabledSwitch">Enabled</label>
+            <input type="checkbox" class="custom-control-input" th:field="*{enabled}" id="enabledSwitch" checked="">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    </div>
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

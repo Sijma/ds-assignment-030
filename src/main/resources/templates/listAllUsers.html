@@ -23,9 +23,9 @@
         <td th:text="${Users.enabled}">Enabled</td>
         <td th:text="${Users.authority}">Role</td>
         <td>
-            <a th:href="@{'/editUser/' + ${Users.username}}">Edit</a>
+            <a th:href="@{'/editUser-' + ${Users.username}}">Edit</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a th:href="@{'/deleteUser/' + ${Users.username}}">Delete</a>
+            <a th:href="@{'/deleteUser-' + ${Users.username}}">Delete</a>
         </td>
     </tr>
     </tbody>

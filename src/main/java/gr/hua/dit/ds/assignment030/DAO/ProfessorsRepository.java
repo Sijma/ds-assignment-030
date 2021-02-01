@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProfessorsRepository extends CrudRepository<Professors, String>
+public interface ProfessorsRepository extends JpaRepository<Professors, String>
 {
     @Query("SELECT k FROM Professors k WHERE CONCAT(k.personellID, ' ', k.user.username, ' ', k.fname, ' ',k.lname) LIKE %?1%")
     public List<Professors> search(String keyword);
