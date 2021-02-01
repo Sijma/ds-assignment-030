@@ -1,27 +1,30 @@
 package gr.hua.dit.ds.assignment030.Entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import gr.hua.dit.ds.assignment030.Entities.Users;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "Supervising_proffesor")
+@Table(name = "supervising_proffesor")
 public class Professors
 {
     @Id
     @Column(name = "personellID", nullable = false)
     private String personellID;
-    @Column(name = "User_name", nullable = false)
-    private String username;
-    @Column(name = "pass_word", nullable = false)
-    private String password;
-    @Column(name = "authority", nullable = false)
-    private String authority;
+
+    @OneToOne
+    @JoinColumn(name = "User_name", referencedColumnName = "username")
+    private Users user;
+
     @Column(name = "First_name", nullable = false)
     private String fname;
+
     @Column(name = "Last_name", nullable = false)
     private String lname;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "professor")
+    private List<Candidates> candidatesList;
 
     public String getPersonellID() {
         return personellID;
@@ -31,28 +34,24 @@ public class Professors
         this.personellID = personellID;
     }
 
-    public String getUsername() {
-        return username;
+    public Users getUser()
+    {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(Users user)
+    {
+        this.user = user;
     }
 
-    public String getPassword() {
-        return password;
+    public List<Candidates> getCandidatesList()
+    {
+        return candidatesList;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public void setCandidatesList(List<Candidates> candidatesList)
+    {
+        this.candidatesList = candidatesList;
     }
 
     public String getFname() {
