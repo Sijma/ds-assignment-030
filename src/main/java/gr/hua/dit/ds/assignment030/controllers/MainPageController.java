@@ -4,6 +4,9 @@ import gr.hua.dit.ds.assignment030.Entities.Candidates;
 import gr.hua.dit.ds.assignment030.Entities.Professors;
 import gr.hua.dit.ds.assignment030.Entities.Users;
 import gr.hua.dit.ds.assignment030.Services.DataServices;
+import gr.hua.dit.ds.assignment030.config.AppSecurityConfig;
+import gr.hua.dit.ds.assignment030.config.SecurityWebApplicationInitializer;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -66,6 +70,14 @@ public class MainPageController {
         }
         redirAttrs.addFlashAttribute("success","User "+ users.getUsername()+" Added Successfully.");
         return "redirect:/add-user";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/update-user")
+    public String updateUser(@ModelAttribute("user") Users user, RedirectAttributes redirAttrs)
+    {
+        service.updateUser(user, user.getUsername());
+        return "redirect:/list-users";
     }
 
     @Secured("ROLE_ADMIN")
@@ -130,7 +142,8 @@ public class MainPageController {
         return "listAllUsers";
     }
 
-    @RequestMapping("/edit/{username}")
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/editUser-{username}")
     public ModelAndView showEditProductForm(@PathVariable(name = "username") String username)
     {
         ModelAndView mav = new ModelAndView("edit-user");
@@ -142,10 +155,78 @@ public class MainPageController {
     }
 
     @Secured("ROLE_ADMIN")
-    @RequestMapping("/deleteUser/{username}")
+    @GetMapping("/deleteUser-{username}")
     public String deleteUser(@PathVariable(name = "username") String username)
     {
         service.deleteUser(username);
         return "redirect:/list-users";
+    }
+
+    @Secured("ROLE_PROF")
+    @GetMapping("/view-super-candidates")
+    public String viewSuperCan(Model model)
+    {
+        String sessionUsername = AppSecurityConfig.getSessionUsername();
+        System.out.println("Session Username: "+sessionUsername);
+        Professors prof = service.getUser(sessionUsername).getProfessor();
+        List<Candidates> listCans = prof.getCandidatesList();
+
+        model.addAttribute("listCans", listCans);
+
+        return "listSuperCandidates";
+    }
+
+    @Secured("ROLE_PROF")
+    @GetMapping("/set-targets-{username}")
+    public ModelAndView setTargets(@PathVariable(name = "username") String username)
+    {
+        ModelAndView mav = new ModelAndView("setTargets");
+
+        Candidates candidate = service.getUser(username).getCandidate();
+        mav.addObject("Candidate", candidate);
+
+        return mav;
+    }
+
+    @Secured("ROLE_PROF")
+    @PostMapping("/assign-targets")
+    public String assignTargets(@ModelAttribute("Candidate") Candidates candidate, RedirectAttributes redirAttrs)
+    {
+        service.updateCan(candidate, candidate.getCandidateId());
+        redirAttrs.addFlashAttribute("success","User "+ candidate.getUser().getUsername()+" targets updated successfully");
+        return "redirect:/view-super-candidates";
+    }
+
+    @Secured("ROLE_CANDIDATE")
+    @GetMapping("/view-progress")
+    public String viewProgress(Model model)
+    {
+        String sessionUsername = AppSecurityConfig.getSessionUsername();
+        Candidates candidate = service.getUser(sessionUsername).getCandidate();
+
+        model.addAttribute("candidate", candidate);
+
+        return "viewProgress";
+    }
+
+    @Secured("ROLE_SECRETARY")
+    @GetMapping("/add-points-{id}")
+    public ModelAndView addPoints(@PathVariable(name = "id") String id)
+    {
+        ModelAndView mav = new ModelAndView("addPoints");
+
+        Candidates candidate = service.getCandidate(id);
+        mav.addObject("Candidate", candidate);
+
+        return mav;
+    }
+
+    @Secured("ROLE_SECRETARY")
+    @PostMapping("/submit-points")
+    public String submitPoints(@ModelAttribute("Candidate") Candidates candidate, RedirectAttributes redirAttrs)
+    {
+        service.updateCan(candidate, candidate.getCandidateId());
+        redirAttrs.addFlashAttribute("success","User "+ candidate.getUser().getUsername()+" targets updated successfully");
+        return "redirect:/view-candidates";
     }
 }
