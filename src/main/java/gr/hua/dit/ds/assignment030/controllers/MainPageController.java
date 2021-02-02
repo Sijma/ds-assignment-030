@@ -122,7 +122,7 @@ public class MainPageController {
         return "redirect:/add-user";
     }
 
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_SECRETARY"})
     @GetMapping("/list-candidates")
     public String listCandidates(Model model)
     {
