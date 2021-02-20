@@ -63,6 +63,7 @@ public class MainPageController {
         {
             redirAttrs.addFlashAttribute("username",users.getUsername());
             redirAttrs.addFlashAttribute("role",users.getAuthority());
+            redirAttrs.addFlashAttribute("idNotExist",false);
             return "redirect:/assign-user";
         }
         redirAttrs.addFlashAttribute("success","User "+ users.getUsername()+" Added Successfully.");
@@ -79,19 +80,11 @@ public class MainPageController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/assign-user")
-    public String assignUser(ModelMap model, @ModelAttribute("username") Object usernameAttribute, @ModelAttribute("role") Object roleAttribute, @ModelAttribute("candidate") Candidates redirCandidate)
+    public String assignUser(ModelMap model, @ModelAttribute("username") Object usernameAttribute, @ModelAttribute("role") Object roleAttribute, @ModelAttribute("idNotExist") Object idExistAttribute)
     {
-        String role, username;
-        if (redirCandidate.getUser() != null)
-        {
-            role = redirCandidate.getUser().getAuthority();
-            username = redirCandidate.getUser().getUsername();
-        }
-        else
-        {
-            role = roleAttribute.toString();
-            username = usernameAttribute.toString();
-        }
+        String role = roleAttribute.toString();
+        String username = usernameAttribute.toString();
+
 
         model.addAttribute("fixedUsername", username);
 
@@ -104,14 +97,13 @@ public class MainPageController {
         }
         else
         {
-            Candidates candidate;
-            if (redirCandidate.getUser() != null) candidate = redirCandidate;
-            else
-            {
-                candidate = new Candidates();
-                candidate.setUser(service.getUser(username));
-            }
+            Candidates candidate = new Candidates();
+            candidate.setUser(service.getUser(username));
             model.addAttribute("Candidate", candidate);
+            System.out.println("Here------------");
+            System.out.println(idExistAttribute);
+            System.out.println("Here------------");
+            //model.addAttribute("idNotExist", idExistAttribute);
             return "assignCandidate";
         }
     }
@@ -132,7 +124,8 @@ public class MainPageController {
         if (!service.superIdExists(candidate.getProfessor().getPersonellID()))
         {
             redirAttrs.addFlashAttribute("idNotExist",true);
-            redirAttrs.addFlashAttribute("Candidate", candidate);
+            redirAttrs.addFlashAttribute("username",candidate.getUser().getUsername());
+            redirAttrs.addFlashAttribute("role","ROLE_CANDIDATE");
             return "redirect:/assign-user";
         }
         service.registerCan(candidate);
