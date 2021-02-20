@@ -19,10 +19,10 @@
                 <label class="col-form-label" for="idInput">ID</label>
                 <input type="text" class="form-control" th:field="*{candidateId}" placeholder="Enter candidate ID.." id="idInput">
             </div>
-            <div class="form-group" th:classappend="${idNotExist} ? has-danger : '' ">
+            <div class="form-group" th:classappend="${idNotExist} ?  has-danger : '' ">
                 <label class="col-form-label" for="SuperIdInput">Supervisor ID</label>
-                <input type="text" class="form-control" th:field="*{professor.personellID}" placeholder="Enter supervisor ID.." id="SuperIdInput">
-                <div class="invalid-feedback" th:if="${idNotExist}">Supervisor ID doesn't exist.</div>
+                <input type="text" class="form-control" th:classappend="${idNotExist} ?  is-invalid : '' " th:field="*{professor.personellID}" placeholder="Enter supervisor ID.." id="SuperIdInput">
+                <div class="invalid-feedback">Supervisor ID doesn't exist.</div>
             </div>
             <div class="form-group">
                 <label class="col-form-label" for="fnameInput">First Name</label>
