@@ -13,10 +13,12 @@
         <div class="form-group">
             <label for="usernameInput">Username</label>
             <input type="text" class="form-control" th:field="*{username}" id="usernameInput" >
+            <input hidden="" type="text" class="form-control" th:field="*{password}">
+            <input hidden="" type="text" class="form-control" th:field="*{authority}">
         </div>
         <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" th:field="*{enabled}" id="enabledSwitch" checked="checked">
             <label class="custom-control-label" for="enabledSwitch">Enabled</label>
-            <input type="checkbox" class="custom-control-input" th:field="*{enabled}" id="enabledSwitch" checked="">
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Submit</button>

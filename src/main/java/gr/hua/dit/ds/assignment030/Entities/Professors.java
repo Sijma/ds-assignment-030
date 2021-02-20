@@ -1,11 +1,10 @@
 package gr.hua.dit.ds.assignment030.Entities;
 
-import gr.hua.dit.ds.assignment030.Entities.Users;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity

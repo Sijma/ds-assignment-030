@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -77,6 +78,20 @@ public class DataServices
             return phdRepo.search(keyword);
         }
         return (List<Candidates>) phdRepo.findAll();
+    }
+
+    public boolean superIdExists(String id)
+    {
+        boolean result;
+        try
+        {
+            result = proRepo.existsById(id);
+            return result;
+        }
+        catch (IllegalArgumentException e)
+        {
+            return false;
+        }
     }
 
     public void assignUser(String username)

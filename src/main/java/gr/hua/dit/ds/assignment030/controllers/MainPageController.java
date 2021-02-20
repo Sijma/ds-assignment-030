@@ -5,8 +5,6 @@ import gr.hua.dit.ds.assignment030.Entities.Professors;
 import gr.hua.dit.ds.assignment030.Entities.Users;
 import gr.hua.dit.ds.assignment030.Services.DataServices;
 import gr.hua.dit.ds.assignment030.config.AppSecurityConfig;
-import gr.hua.dit.ds.assignment030.config.SecurityWebApplicationInitializer;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -82,10 +79,20 @@ public class MainPageController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/assign-user")
-    public String assignUser(ModelMap model, @ModelAttribute("username") Object usernameAttribute, @ModelAttribute("role") Object roleAttribute)
+    public String assignUser(ModelMap model, @ModelAttribute("username") Object usernameAttribute, @ModelAttribute("role") Object roleAttribute, @ModelAttribute("candidate") Candidates redirCandidate)
     {
-        String role = roleAttribute.toString();
-        String username = usernameAttribute.toString();
+        String role, username;
+        if (redirCandidate.getUser() != null)
+        {
+            role = redirCandidate.getUser().getAuthority();
+            username = redirCandidate.getUser().getUsername();
+        }
+        else
+        {
+            role = roleAttribute.toString();
+            username = usernameAttribute.toString();
+        }
+
         model.addAttribute("fixedUsername", username);
 
         if (role.equals("ROLE_PROF"))
@@ -97,8 +104,13 @@ public class MainPageController {
         }
         else
         {
-            Candidates candidate = new Candidates();
-            candidate.setUser(service.getUser(username));
+            Candidates candidate;
+            if (redirCandidate.getUser() != null) candidate = redirCandidate;
+            else
+            {
+                candidate = new Candidates();
+                candidate.setUser(service.getUser(username));
+            }
             model.addAttribute("Candidate", candidate);
             return "assignCandidate";
         }
@@ -117,6 +129,12 @@ public class MainPageController {
     @PostMapping("/assign-can-submit")
     public String submitCan(@ModelAttribute("Candidate") Candidates candidate, RedirectAttributes redirAttrs)
     {
+        if (!service.superIdExists(candidate.getProfessor().getPersonellID()))
+        {
+            redirAttrs.addFlashAttribute("idNotExist",true);
+            redirAttrs.addFlashAttribute("Candidate", candidate);
+            return "redirect:/assign-user";
+        }
         service.registerCan(candidate);
         redirAttrs.addFlashAttribute("success","User "+ candidate.getUser().getUsername()+" Added Successfully.");
         return "redirect:/add-user";
@@ -144,14 +162,30 @@ public class MainPageController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/editUser-{username}")
-    public ModelAndView showEditProductForm(@PathVariable(name = "username") String username)
+    public ModelAndView showEditUserForm(@PathVariable(name = "username") String username)
     {
         ModelAndView mav = new ModelAndView("edit-user");
-
         Users user = service.getUser(username);
         mav.addObject("user", user);
-
         return mav;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/editCan-{candidateID}")
+    public ModelAndView showEditCandidateForm(@PathVariable(name = "candidateID") String canId)
+    {
+        ModelAndView mav = new ModelAndView("editCandidate");
+        Candidates candidate = service.getCandidate(canId);
+        mav.addObject("candidate", candidate);
+        return mav;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/update-candidate")
+    public String updateCan(@ModelAttribute("candidate") Candidates candidate, RedirectAttributes redirAttrs)
+    {
+        service.updateCan(candidate, candidate.getCandidateId());
+        return "redirect:/list-candidates";
     }
 
     @Secured("ROLE_ADMIN")
@@ -227,6 +261,6 @@ public class MainPageController {
     {
         service.updateCan(candidate, candidate.getCandidateId());
         redirAttrs.addFlashAttribute("success","User "+ candidate.getUser().getUsername()+" targets updated successfully");
-        return "redirect:/view-candidates";
+        return "redirect:/list-candidates";
     }
 }

@@ -4,12 +4,14 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "phd_candidate")
 @DynamicInsert
 @DynamicUpdate
-public class Candidates {
+public class Candidates
+{
 
     @Id
     @Column(name = "ID", nullable = false)
