@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hua.gr</title>
+    <div th:replace="fragments/header :: header"></div>
+</head>
+<body>
+<table class="table table-hover">
+    <thead>
+    <tr class="table-info">
+        <th>Candidate ID</th>
+        <th>Supervisor ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>User Name</th>
+        <th>Correction Points</th>
+        <th>Target Correction Points</th>
+        <th>Surveilence Points</th>
+        <th>Target Surveilence Points</th>
+        <th>Teaching Points</th>
+        <th>Target Teaching Points</th>
+
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${candidate.candidateId}">canid</td>
+        <td th:text="${candidate.professor.personellID}">supid</td>
+        <td th:text="${candidate.fname}">fname</td>
+        <td th:text="${candidate.lname}">lname</td>
+        <td th:text="${candidate.user.username}">username</td>
+        <td th:text="${candidate.cp}">cp</td>
+        <td th:text="${candidate.tcp}">tcp</td>
+        <td th:text="${candidate.sp}">sp</td>
+        <td th:text="${candidate.tsp}">tsp</td>
+        <td th:text="${candidate.tp}">tp</td>
+        <td th:text="${candidate.ttp}">ttp</td>
+    </tr>
+    </tbody>
+</table>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
