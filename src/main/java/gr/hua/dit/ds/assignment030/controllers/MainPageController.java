@@ -35,30 +35,40 @@ public class MainPageController {
     @GetMapping("/get-info")
     public String showGetPoints() { return "getDocInfo";}
 
-    /*@Secured({"ROLE_ADMIN", "ROLE_SECRETARY"})
-    @PostMapping("/submitSearch")
-    public String getPoints(@RequestParam("type") String type, @RequestParam("docid") String docid, RedirectAttributes redirAttrs) throws SQLException
-    {
-        Secretary sec = new Secretary();
-        String result = sec.getDocPoints(docid);
-        redirAttrs.addFlashAttribute("success", result);
-        return "redirect:/get-info";
-    }*/
-
     @Secured("ROLE_ADMIN")
     @GetMapping("/add-user")
-    public String newUser(Model model)
+    public String newUser(Model model, @ModelAttribute("userRedirect") Object flashAttribute)
     {
-        Users users = new Users();
-        model.addAttribute("user", users);
+        Users user = new Users();
+        model.addAttribute("user", user);
+        model.addAttribute("passwordConfirm", "");
         return "newUserForm";
     }
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/submit-user")
-    public String saveUser(@ModelAttribute("user") Users users, RedirectAttributes redirAttrs)
+    public String saveUser(@ModelAttribute("user") Users users, @RequestParam String confPassword, RedirectAttributes redirAttrs)
     {
-        service.registerUser(users);
+        if (users.getAuthority().equals(""))
+        {
+            redirAttrs.addFlashAttribute("invalidRole", true);
+            return "redirect:/add-user";
+        }
+        if (confPassword.equals(users.getPassword()) && !service.usernameExists(users.getUsername()))
+        {
+            service.registerUser(users);
+        }
+        else if (!confPassword.equals(users.getPassword()))
+        {
+            redirAttrs.addFlashAttribute("invalidPass", true);
+            return "redirect:/add-user";
+        }
+        else
+        {
+            redirAttrs.addFlashAttribute("invalidName", true);
+            return "redirect:/add-user";
+        }
+
         if (!(users.getAuthority().equals("ROLE_ADMIN")))
         {
             redirAttrs.addFlashAttribute("username",users.getUsername());
@@ -74,7 +84,7 @@ public class MainPageController {
     @PostMapping("/update-user")
     public String updateUser(@ModelAttribute("user") Users user, RedirectAttributes redirAttrs)
     {
-        service.updateUser(user, user.getUsername());
+        service.updateUser(user);
         return "redirect:/list-users";
     }
 
@@ -100,9 +110,6 @@ public class MainPageController {
             Candidates candidate = new Candidates();
             candidate.setUser(service.getUser(username));
             model.addAttribute("Candidate", candidate);
-            System.out.println("Here------------");
-            System.out.println(idExistAttribute);
-            System.out.println("Here------------");
             //model.addAttribute("idNotExist", idExistAttribute);
             return "assignCandidate";
         }
@@ -161,6 +168,30 @@ public class MainPageController {
         Users user = service.getUser(username);
         mav.addObject("user", user);
         return mav;
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/reset-pass-{username}")
+    public String resetPassword(Model model, @PathVariable(name = "username") String username)
+    {
+        model.addAttribute("username", username);
+        return "resetPassword";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/submit-password")
+    public String submitNewPassword(@RequestParam String username ,@RequestParam String password ,@RequestParam String confPassword, RedirectAttributes redirAttrs)
+    {
+        if (password.equals(confPassword))
+        {
+            Users changePassUser = service.getUser(username);
+            service.changePass(changePassUser, password);
+            service.updateUser(changePassUser);
+            redirAttrs.addFlashAttribute("success","User "+ username +" edited successfully.");
+            return "redirect:editUser-"+username;
+        }
+        redirAttrs.addFlashAttribute("invalidPass", true);
+        return "redirect:/reset-pass-"+username;
     }
 
     @Secured("ROLE_ADMIN")

@@ -34,10 +34,14 @@ public class DataServices
         userRepo.save(users);
     }
 
-    public void updateUser(Users user, String username)
+    public void updateUser(Users user)
     {
-        user.setUsername(username);
         userRepo.save(user);
+    }
+
+    public void changePass(Users user, String newPass)
+    {
+        user.setPassword(passwordEncoder.encode(newPass));
     }
 
     public void registerProf(Professors prof)
@@ -92,6 +96,11 @@ public class DataServices
         {
             return false;
         }
+    }
+
+    public boolean usernameExists(String username)
+    {
+        return userRepo.existsById(username);
     }
 
     public void assignUser(String username)

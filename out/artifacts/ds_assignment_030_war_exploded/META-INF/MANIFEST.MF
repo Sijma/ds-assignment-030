@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: John
+Build-Jdk: 15.0.2
+Implementation-Title: assignment030
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: gr.hua.dit.ds
+Main-Class: ${start-class}
+
